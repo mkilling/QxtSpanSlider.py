@@ -9,6 +9,5 @@ Span slider for PyQt ported from [libqxt](http://libqxt.bitbucket.org/doc):
     # ...
     
     slider = QxtSpanSlider(self.window)
-    slider.setSpan(0, 100)
-    slider.setLowerPosition(10)
-    slider.setUpperPosition(20)
+    slider.setRange(0, 100)
+    slider.setSpan(30, 70)
