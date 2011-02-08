@@ -23,8 +23,8 @@ class QxtSpanSlider(QSlider):
                       "setSpan(int, int)",
                       "setLowerPosition(int)",
                       "setUpperPosition(int)",
-                      "setGradientLeftColor(PyQT_PyQbject)",
-                      "setGradientRightColor(PyQT_PyQbject)")
+                      "setGradientLeftColor(PyQt_PyObject)",
+                      "setGradientRightColor(PyQt_PyObject)")
 
     def __init__(self, parent = None):
         QSlider.__init__(self, QtCore.Qt.Horizontal, parent)
@@ -296,8 +296,8 @@ class QxtSpanSlider(QSlider):
             self.setupPainter(painter, opt.orientation, groove.left(), groove.center().y(), groove.right(), groove.center().y())
 
         # draw groove
-        intersected = rect.intersected(groove)
-        gradient = QLinearGradient(rect.topLeft(), rect.topRight())
+        intersected = QtCore.QRectF(rect.intersected(groove))
+        gradient = QLinearGradient(intersected.topLeft(), intersected.topRight())
         gradient.setColorAt(0, self.gradientLeft)
         gradient.setColorAt(1, self.gradientRight)
         painter.fillRect(intersected, gradient)
@@ -433,5 +433,5 @@ class QxtSpanSlider(QSlider):
     upperPosition = pyqtProperty("int", upperPosition, setUpperPosition)
     lowerPosition = pyqtProperty("int", lowerPosition, setLowerPosition)
     handleMovementMode = pyqtProperty("PyQt_PyObject", handleMovementMode, setHandleMovementMode)
-    gradientLeftColor = pyqtProperty("PyQt_PyQbject", gradientLeftColor, setGradientLeftColor)
-    gradientRightColor = pyqtProperty("PyQt_PyQbject", gradientRightColor, setGradientRightColor)
+    gradientLeftColor = pyqtProperty("PyQt_PyObject", gradientLeftColor, setGradientLeftColor)
+    gradientRightColor = pyqtProperty("PyQt_PyObject", gradientRightColor, setGradientRightColor)
