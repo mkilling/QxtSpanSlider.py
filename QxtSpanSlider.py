@@ -22,7 +22,9 @@ class QxtSpanSlider(QSlider):
                       "setUpperValue(int)",
                       "setSpan(int, int)",
                       "setLowerPosition(int)",
-                      "setUpperPosition(int)")
+                      "setUpperPosition(int)",
+                      "setGradientLeftColor(PyQT_PyQbject)",
+                      "setGradientRightColor(PyQT_PyQbject)")
 
     def __init__(self, parent = None):
         QSlider.__init__(self, QtCore.Qt.Horizontal, parent)
@@ -44,6 +46,8 @@ class QxtSpanSlider(QSlider):
         self.mainControl = QxtSpanSlider.LowerHandle
         self.firstMovement = False
         self.blockTracking = False
+        self.gradientLeft = self.palette().color(QPalette.Dark).light(110)
+        self.gradientRight = self.gradientLeft
 
     def lowerValue(self):
         return min(self.lower, self.upper)
@@ -107,6 +111,18 @@ class QxtSpanSlider(QSlider):
                 main = (self.mainControl == QxtSpanSlider.UpperHandle)
                 self.triggerAction(QxtSpanSlider.SliderMove, main)
 
+    def gradientLeftColor(self):
+        return self.gradientLeft
+    
+    def setGradientLeftColor(self, color):
+        self.gradientLeft = color
+                
+    def gradientRightColor(self):
+        return self.gradientRight
+    
+    def setGradientRightColor(self, color):
+        self.gradientRight = color
+                
     def movePressedHandle(self):
         if self.lastPressed == QxtSpanSlider.LowerHandle:
             if self.lowerPos != self.lower:
@@ -273,14 +289,18 @@ class QxtSpanSlider(QSlider):
             groove.adjust(0, 0, 0, -1);
 
         # pen & brush
-        painter.setPen(QPen(self.palette().color(QPalette.Dark).light(110), 0))
+        #painter.setPen(QPen(self.gradientLeftColor, 0))
         if opt.orientation == QtCore.Qt.Horizontal:
             self.setupPainter(painter, opt.orientation, groove.center().x(), groove.top(), groove.center().x(), groove.bottom())
         else:
             self.setupPainter(painter, opt.orientation, groove.left(), groove.center().y(), groove.right(), groove.center().y())
 
         # draw groove
-        painter.drawRect(rect.intersected(groove))
+        intersected = rect.intersected(groove)
+        gradient = QLinearGradient(rect.topLeft(), rect.topRight())
+        gradient.setColorAt(0, self.gradientLeft)
+        gradient.setColorAt(1, self.gradientRight)
+        painter.fillRect(intersected, gradient)
     
     def drawHandle(self, painter, handle):
         opt = QStyleOptionSlider()
@@ -413,3 +433,5 @@ class QxtSpanSlider(QSlider):
     upperPosition = pyqtProperty("int", upperPosition, setUpperPosition)
     lowerPosition = pyqtProperty("int", lowerPosition, setLowerPosition)
     handleMovementMode = pyqtProperty("PyQt_PyObject", handleMovementMode, setHandleMovementMode)
+    gradientLeftColor = pyqtProperty("PyQt_PyQbject", gradientLeftColor, setGradientLeftColor)
+    gradientRightColor = pyqtProperty("PyQt_PyQbject", gradientRightColor, setGradientRightColor)
