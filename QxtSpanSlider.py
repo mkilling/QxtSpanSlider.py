@@ -142,7 +142,7 @@ class QxtSpanSlider(QSlider):
                 value = clamp(self.upper + self.singleStep(), my_min, my_max)
                 up = True
             else:
-                value = clamp(lower + self.singleStep(), my_min, my_max)
+                value = clamp(self.lower + self.singleStep(), my_min, my_max)
         elif action == QAbstractSlider.SliderSingleStepSub:
             if isUpperHandle:
                 value = clamp(self.upper - self.singleStep(), my_min, my_max)
