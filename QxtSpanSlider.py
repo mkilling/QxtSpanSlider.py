@@ -47,7 +47,7 @@ class QxtSpanSlider(QSlider):
         self.firstMovement = False
         self.blockTracking = False
         self.gradientLeft = self.palette().color(QPalette.Dark).light(110)
-        self.gradientRight = self.gradientLeft
+        self.gradientRight = self.palette().color(QPalette.Dark).light(110)
 
     def lowerValue(self):
         return min(self.lower, self.upper)
@@ -116,13 +116,15 @@ class QxtSpanSlider(QSlider):
     
     def setGradientLeftColor(self, color):
         self.gradientLeft = color
-                
+        self.update()
+    
     def gradientRightColor(self):
         return self.gradientRight
     
     def setGradientRightColor(self, color):
         self.gradientRight = color
-                
+        self.update()
+    
     def movePressedHandle(self):
         if self.lastPressed == QxtSpanSlider.LowerHandle:
             if self.lowerPos != self.lower:
@@ -289,7 +291,7 @@ class QxtSpanSlider(QSlider):
             groove.adjust(0, 0, 0, -1);
 
         # pen & brush
-        #painter.setPen(QPen(self.gradientLeftColor, 0))
+        painter.setPen(QPen(self.gradientLeftColor, 0))
         if opt.orientation == QtCore.Qt.Horizontal:
             self.setupPainter(painter, opt.orientation, groove.center().x(), groove.top(), groove.center().x(), groove.bottom())
         else:
