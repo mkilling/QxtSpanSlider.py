@@ -12,3 +12,7 @@ slider = QxtSpanSlider(self.window)
 slider.setRange(0, 100)
 slider.setSpan(30, 70)
 ```
+
+## License
+
+See [LICENSE](https://github.com/mkilling/QxtSpanSlider.py/blob/master/LICENSE).
